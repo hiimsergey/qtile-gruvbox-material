@@ -11,12 +11,14 @@ import os, subprocess
 
 ## VARIABLES
 mod = "mod4"
+myfont = "JetBrains Mono"
 terminal = "kitty"
 browser = "chromium"
 notes = "obsidian"
 vm = "virt-manager"
 minecraft = "prismlauncher"
-files = "thunar Downloads"
+files = "thunar Downloads" # I prefer to start my file manager in ~/Downloads
+fmnormal = "thunar" # For when I need the home directory
 
 # KEYS
 keys = [
@@ -27,6 +29,7 @@ keys = [
     Key([mod], "v", lazy.spawn(vm), desc="Launch virtual machines"),
     Key([mod], "g", lazy.spawn(minecraft), desc="Launch Minecraft"),
     Key([mod], "e", lazy.spawn(files), desc="Launch file manager"),
+    Key([mod, "shift"], "e", lazy.spawn(fmnormal), desc="Launch file manager"),
 
     # Switch between windows
     Key([mod], "h", lazy.layout.left(), desc="Move focus to left"),
@@ -131,7 +134,7 @@ def pline(rl, fg, bg):
     return widget.TextBox(text = uc, padding = 0, fontsize = 22, foreground=fg, background=bg)
 
 widget_defaults = dict(
-    font="JetBrains Mono",
+    font=myfont,
     fontsize=12,
     padding=3,
     background=colo[0]
@@ -155,14 +158,17 @@ screens = [
                     this_current_screen_border="#7daea3"
                 ),
                 pline(0, colo[6], colo[7]),
-                widget.WindowName(
-                    background=colo[7],
-                    empty_group_string="Gruvbox <3"
+                widget.TaskList(
+                    highlight_method="block",
+                    max_title_width=300,
+                    border="#d3869b",
+                    padding=2,
+                    background=colo[7]
                 ),
                 pline(0, colo[7], colo[0]),
                 widget.Prompt(),
                 widget.Spacer(
-                    length=800
+                    length=700
                 ),
                 pline(1, colo[5], colo[0]),
                 widget.Systray(
@@ -220,9 +226,7 @@ floating_layout = layout.Floating(
         Match(title="pinentry"),  # GPG key password entry
     ]
 )
-auto_fullscreen = True
 focus_on_window_activation = "smart"
 reconfigure_screens = True
-auto_minimize = True
 wl_input_rules = None
 wmname = "Qtile"
