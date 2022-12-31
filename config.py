@@ -1,35 +1,34 @@
 # ~/.config/qtile/config.py
 # Qtile Configuration
-# Gruvbox Material Style
+# Gruvbox Material
 # https://github.com/hiimsergey/qtile-gruvbox
 
 ## IMPORTS
-from libqtile import bar, layout, widget, hook
+from libqtile import bar, layout, widget, hook, extension
 from libqtile.config import Click, Drag, Group, Key, Match, Screen
 from libqtile.lazy import lazy
 import os, subprocess
 
-## VARIABLES
+## KEYS
 mod = "mod4"
-myfont = "JetBrains Mono"
-terminal = "kitty"
-browser = "chromium"
-notes = "obsidian"
-vm = "virt-manager"
-minecraft = "prismlauncher"
-files = "thunar Downloads" # I prefer to start my file manager in ~/Downloads
-fmnormal = "thunar" # For when I need the home directory
-
-# KEYS
 keys = [
     # Launch applications
-    Key([mod], "a", lazy.spawn(terminal), desc="Launch terminal"),
-    Key([mod], "c", lazy.spawn(browser), desc="Launch browser"),
-    Key([mod], "q", lazy.spawn(notes), desc="Launch notes"),
-    Key([mod], "v", lazy.spawn(vm), desc="Launch virtual machines"),
-    Key([mod], "g", lazy.spawn(minecraft), desc="Launch Minecraft"),
-    Key([mod], "e", lazy.spawn(files), desc="Launch file manager"),
-    Key([mod, "shift"], "e", lazy.spawn(fmnormal), desc="Launch file manager"),
+    Key([mod], "a", lazy.spawn("kitty"), desc="Launch terminal"),
+    Key([mod], "c", lazy.spawn("chromium"), desc="Launch browser"),
+    Key([mod], "q", lazy.spawn("neovide --multigrid"), desc="Launch editor"),
+    Key([mod], "v", lazy.spawn("virt-manager"), desc="Launch virtual machines"),
+    Key([mod], "g", lazy.spawn("prismlauncher"), desc="Launch Minecraft"),
+    Key([mod], "e", lazy.spawn("thunar Downloads"), desc="Show Downloads folder"),
+    Key([mod, "shift"], "e", lazy.spawn("thunar"), desc="Launch file manager"),
+
+    # Volume
+    Key([], "XF86AudioRaiseVolume", lazy.spawn("amixer -c 0 -q set Master 2dB+")),
+    Key([], "XF86AudioLowerVolume", lazy.spawn("amixer -c 0 -q set Master 2dB-")),
+    Key([], "XF86AudioMute", lazy.spawn("amixer -c 0 -q set Master toggle")),
+
+    # Brightness
+    Key([], "XF86MonBrightnessUp", lazy.spawn("brightnessctl -e set 10%+")),
+    Key([], "XF86MonBrightnessDown", lazy.spawn("brightnessctl -e set 10%-")),
 
     # Switch between windows
     Key([mod], "h", lazy.layout.left(), desc="Move focus to left"),
@@ -70,12 +69,14 @@ keys = [
     Key([mod], "w", lazy.window.kill(), desc="Kill focused window"),
     Key([mod, "control"], "r", lazy.reload_config(), desc="Reload the config"),
     Key([mod, "control"], "q", lazy.shutdown(), desc="Shutdown Qtile"),
-    Key([mod], "r", lazy.spawncmd(), desc="Spawn a command using a prompt widget"),
 
-    # Volume
-    Key([], "XF86AudioRaiseVolume", lazy.spawn("amixer -c 0 -q set Master 2dB+")),
-    Key([], "XF86AudioLowerVolume", lazy.spawn("amixer -c 0 -q set Master 2dB-")),
-    Key([], "XF86AudioMute", lazy.spawn("amixer -c 0 -q set Master toggle")),
+    # Dmenu extension
+    Key([mod], "r", lazy.run_extension(extension.DmenuRun(
+        font="JetBrains Mono",
+        fontsize=12,
+        dmenu_command="dmenu_run",
+        dmenu_prompt="run:",
+    ))),
 ]
 
 ## MOUSE
@@ -134,7 +135,7 @@ def pline(rl, fg, bg):
     return widget.TextBox(text = uc, padding = 0, fontsize = 22, foreground=fg, background=bg)
 
 widget_defaults = dict(
-    font=myfont,
+    font="JetBrains Mono",
     fontsize=12,
     padding=3,
     background=colo[0]
@@ -167,21 +168,28 @@ screens = [
                 ),
                 pline(0, colo[7], colo[0]),
                 widget.Prompt(),
-                widget.Spacer(
-                    length=700
-                ),
+                widget.Spacer(),
                 pline(1, colo[5], colo[0]),
-                widget.Systray(
+                widget.TextBox(
+                    "☀",
                     background=colo[5]
+                ),
+                widget.Backlight(
+                    backlight_name="intel_backlight",
+                    background=colo[5]
+                ),
+                pline(1, colo[2], colo[5]),
+                widget.Systray(
+                    background=colo[2]
                 ),
                 widget.Volume(
                     emoji=True,
-                    background=colo[5]
+                    background=colo[2]
                 ),
                 widget.Volume(
-                    background=colo[5]
+                    background=colo[2]
                 ),
-                pline(1, colo[4], colo[5]),
+                pline(1, colo[4], colo[2]),
                 widget.BatteryIcon(
                     background=colo[4]
                 ),
