@@ -4,7 +4,7 @@
 # https://github.com/hiimsergey/qtile-gruvbox
 
 ## IMPORTS
-from libqtile import bar, layout, widget, hook, extension
+from libqtile import bar, layout, widget, hook
 from libqtile.config import Click, Drag, Group, Key, Match, Screen
 from libqtile.lazy import lazy
 import os, subprocess
@@ -15,11 +15,16 @@ keys = [
     # Launch applications
     Key([mod], "a", lazy.spawn("kitty"), desc="Launch terminal"),
     Key([mod], "c", lazy.spawn("chromium"), desc="Launch browser"),
+    Key([mod], "e", lazy.spawn("thunar Downloads"), desc="Show Downloads folder"),
+    Key([mod], "g", lazy.spawn("prismlauncher"), desc="Launch Minecraft"),
+    Key([mod], "o", lazy.spawn("obsidian"), desc="Launch notes"),
     Key([mod], "q", lazy.spawn("neovide --multigrid"), desc="Launch editor"),
     Key([mod], "v", lazy.spawn("virt-manager"), desc="Launch virtual machines"),
-    Key([mod], "g", lazy.spawn("prismlauncher"), desc="Launch Minecraft"),
-    Key([mod], "e", lazy.spawn("thunar Downloads"), desc="Show Downloads folder"),
-    Key([mod, "shift"], "e", lazy.spawn("thunar"), desc="Launch file manager"),
+    Key([mod, "alt"], "e", lazy.spawn("thunar"), desc="Launch file manager"),
+    
+    # Rofi
+    Key([mod], "r", lazy.spawn("rofi -show drun"), desc="Run application launcher"),
+    Key([mod, "shift"], "r", lazy.spawn("rofi -show filebrowser"), desc="Run Rofi file browser"),
 
     # Volume
     Key([], "XF86AudioRaiseVolume", lazy.spawn("amixer -c 0 -q set Master 2dB+")),
@@ -29,6 +34,10 @@ keys = [
     # Brightness
     Key([], "XF86MonBrightnessUp", lazy.spawn("brightnessctl -e set 10%+")),
     Key([], "XF86MonBrightnessDown", lazy.spawn("brightnessctl -e set 10%-")),
+
+    # Redshift
+    Key([mod, "shift"], "r", lazy.spawn("redshift -O 5000K")),
+    Key([mod, "shift"], "e", lazy.spawn("redshift -x")),
 
     # Switch between windows
     Key([mod], "h", lazy.layout.left(), desc="Move focus to left"),
@@ -69,14 +78,6 @@ keys = [
     Key([mod], "w", lazy.window.kill(), desc="Kill focused window"),
     Key([mod, "control"], "r", lazy.reload_config(), desc="Reload the config"),
     Key([mod, "control"], "q", lazy.shutdown(), desc="Shutdown Qtile"),
-
-    # Dmenu extension
-    Key([mod], "r", lazy.run_extension(extension.DmenuRun(
-        font="JetBrains Mono",
-        fontsize=12,
-        dmenu_command="dmenu_run",
-        dmenu_prompt="run:",
-    ))),
 ]
 
 ## MOUSE
@@ -100,7 +101,7 @@ for i in groups:
 
 ## LAYOUTS
 layouts = [
-    layout.Columns(border_focus_stack=["#d75f5f", "#8f3d3d"], border_width=4, margin=6, margin_on_single=0),
+    layout.Columns(border_focus_stack=["#ea6962", "#b85651"], border_width=4, margin=6, margin_on_single=0),
     layout.Max(),
     # layout.Stack(num_stacks=2),
     layout.Bsp(),
@@ -115,14 +116,14 @@ layouts = [
 ]
 
 ## COLORS
-colo = [["#282828"],
-        ["#b85651"],
-        ["#bd6f3e"],
-        ["#c18f41"],
-        ["#8f9a52"],
-        ["#72966c"],
-        ["#68948a"],
-        ["#ab6c7d"]]
+colo = [["#282828"], # bg
+        ["#b85651"], # red
+        ["#bd6f3e"], # orange
+        ["#c18f41"], # yellow
+        ["#8f9a52"], # green
+        ["#72966c"], # aqua
+        ["#68948a"], # blue
+        ["#ab6c7d"]] # purple
 
 ## SCREENS
 # To achieve a Powerline effect without installing anything additionally, you insert Unicode characters ("" and "") between the widgets.
@@ -145,7 +146,7 @@ extension_defaults = widget_defaults.copy()
 screens = [
     Screen(
         wallpaper="~/.config/qtile/gruvbox-forest.jpg",
-        wallpaper_mode="stretch",
+        wallpaper_mode="fill",
         top=bar.Bar(
             [
                 widget.CurrentLayoutIcon(
@@ -171,7 +172,7 @@ screens = [
                 widget.Spacer(),
                 pline(1, colo[5], colo[0]),
                 widget.TextBox(
-                    "☀",
+                    "💡",
                     background=colo[5]
                 ),
                 widget.Backlight(
