@@ -1,7 +1,7 @@
 # ~/.config/qtile/config.py
-# Qtile Configuration
+# Qtile configuration
 # Gruvbox Material
-# https://github.com/hiimsergey/qtile-gruvbox
+# https://github.com/hiimsergey/qtile-gruvbox-material
 
 ## IMPORTS
 from libqtile import bar, layout, widget, hook
@@ -15,16 +15,15 @@ keys = [
     # Launch applications
     Key([mod], "a", lazy.spawn("kitty"), desc="Launch terminal"),
     Key([mod], "c", lazy.spawn("chromium"), desc="Launch browser"),
-    Key([mod], "e", lazy.spawn("thunar Downloads"), desc="Show Downloads folder"),
+    Key([mod], "e", lazy.spawn("pcmanfm Downloads"), desc="Show Downloads folder"),
     Key([mod], "g", lazy.spawn("prismlauncher"), desc="Launch Minecraft"),
-    Key([mod], "o", lazy.spawn("obsidian"), desc="Launch notes"),
     Key([mod], "q", lazy.spawn("neovide --multigrid"), desc="Launch editor"),
     Key([mod], "v", lazy.spawn("virt-manager"), desc="Launch virtual machines"),
-    Key([mod, "alt"], "e", lazy.spawn("thunar"), desc="Launch file manager"),
-    
+    Key([mod, "mod1"], "e", lazy.spawn("pcmanfm"), desc="Launch file manager"),
+
     # Rofi
     Key([mod], "r", lazy.spawn("rofi -show drun"), desc="Run application launcher"),
-    Key([mod, "shift"], "r", lazy.spawn("rofi -show filebrowser"), desc="Run Rofi file browser"),
+    Key([mod, "shift"], "r", lazy.spawn("rofi -show filebrowser"), desc="Launch Rofi file browser"),
 
     # Volume
     Key([], "XF86AudioRaiseVolume", lazy.spawn("amixer -c 0 -q set Master 2dB+")),
@@ -64,11 +63,11 @@ keys = [
     Key([mod, "mod1"], "l", lazy.layout.swap_column_right()),
 
     # Toggle between split and unsplit sides of stack.
-    Key([mod], "return", lazy.layout.toggle_split(), desc="Toggle between split and unsplit sides of stack"),
+    Key([mod], "return", lazy.layout.toggle_split(), desc="Toggle split window stack"),
 
     # Toggle between different layouts
     Key([mod], "tab", lazy.next_layout(), desc="Toggle next layout"),
-    Key([mod, "shift"], "tab", lazy.prev_layout(), desc="Toggle previous layout"),
+    Key([mod, "shift"], "tab", lazy.next_layout(), desc="Toggle previous layout"),
 
     # Toggle floating or fullscreen windows
     Key([mod], "t", lazy.window.toggle_floating(), desc="Toggle floating window"),
@@ -95,7 +94,7 @@ for i in groups:
             # mod1 + letter of group = switch to group
             Key([mod], i.name, lazy.group[i.name].toscreen(), desc="Switch to group {}".format(i.name)),
             # mod1 + shift + letter of group = switch to & move focused window to group
-            Key([mod, "shift"], i.name, lazy.window.togroup(i.name, switch_group=True), desc="Switch to & move focused window to group {}".format(i.name)),
+            Key( [mod, "shift"], i.name, lazy.window.togroup(i.name, switch_group=True), desc="Switch to & move focused window to group {}".format(i.name)),
         ]
     )
 
@@ -104,7 +103,7 @@ layouts = [
     layout.Columns(border_focus_stack=["#ea6962", "#b85651"], border_width=4, margin=6, margin_on_single=0),
     layout.Max(),
     # layout.Stack(num_stacks=2),
-    layout.Bsp(),
+    # layout.Bsp(),
     # layout.Matrix(),
     # layout.MonadTall(),
     # layout.MonadWide(),
@@ -168,7 +167,6 @@ screens = [
                     background=colo[7]
                 ),
                 pline(0, colo[7], colo[0]),
-                widget.Prompt(),
                 widget.Spacer(),
                 pline(1, colo[5], colo[0]),
                 widget.TextBox(
