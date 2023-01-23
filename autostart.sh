@@ -1,3 +1,3 @@
 #!/usr/bin/bash
 picom -b
-redshift -O 5500K
+redshift -O 5000K

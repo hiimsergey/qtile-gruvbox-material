@@ -15,11 +15,13 @@ keys = [
     # Launch applications
     Key([mod], "a", lazy.spawn("kitty"), desc="Launch terminal"),
     Key([mod], "c", lazy.spawn("chromium"), desc="Launch browser"),
-    Key([mod], "e", lazy.spawn("pcmanfm Downloads"), desc="Show Downloads folder"),
+    Key([mod], "e", lazy.spawn("thunar Downloads"), desc="Show Downloads folder"),
     Key([mod], "g", lazy.spawn("prismlauncher"), desc="Launch Minecraft"),
-    Key([mod], "q", lazy.spawn("neovide --multigrid"), desc="Launch editor"),
+    Key([mod], "q", lazy.spawn("obsidian"), desc="Launch notes"),
+    Key([mod, "shift"], "q", lazy.spawn("vscodium"), desc="Launch IDE"),
     Key([mod], "v", lazy.spawn("virt-manager"), desc="Launch virtual machines"),
-    Key([mod, "mod1"], "e", lazy.spawn("pcmanfm"), desc="Launch file manager"),
+    Key([mod, "shift"], "e", lazy.spawn("thunar"), desc="Launch file manager"),
+    Key([mod, "shift"], "c", lazy.spawn("chromium --incognito"), desc="Launch incognito browser window"),
 
     # Rofi
     Key([mod], "r", lazy.spawn("rofi -show drun"), desc="Run application launcher"),
@@ -35,8 +37,8 @@ keys = [
     Key([], "XF86MonBrightnessDown", lazy.spawn("brightnessctl -e set 10%-")),
 
     # Redshift
-    Key([mod, "shift"], "r", lazy.spawn("redshift -O 5000K")),
-    Key([mod, "shift"], "e", lazy.spawn("redshift -x")),
+    Key([mod, "shift"], "x", lazy.spawn("redshift -O 5000K")),
+    Key([mod, "shift"], "y", lazy.spawn("redshift -x")),
 
     # Switch between windows
     Key([mod], "h", lazy.layout.left(), desc="Move focus to left"),
@@ -168,27 +170,29 @@ screens = [
                 ),
                 pline(0, colo[7], colo[0]),
                 widget.Spacer(),
-                pline(1, colo[5], colo[0]),
-                widget.TextBox(
-                    "💡",
-                    background=colo[5]
+
+                pline(1, colo[2], colo[0]),
+                widget.Net(
+                    interface="wlo1",
+                    format="📡 {total}",
+                    update_interval=30,
+                    background=colo[2]
                 ),
+                pline(1, colo[5], colo[2]),
                 widget.Backlight(
+                    format="💡 {percent:2.0%}",
                     backlight_name="intel_backlight",
                     background=colo[5]
                 ),
-                pline(1, colo[2], colo[5]),
-                widget.Systray(
-                    background=colo[2]
-                ),
+                pline(1, colo[3], colo[5]),
                 widget.Volume(
                     emoji=True,
-                    background=colo[2]
+                    background=colo[3]
                 ),
                 widget.Volume(
-                    background=colo[2]
+                    background=colo[3]
                 ),
-                pline(1, colo[4], colo[2]),
+                pline(1, colo[4], colo[3]),
                 widget.BatteryIcon(
                     background=colo[4]
                 ),
