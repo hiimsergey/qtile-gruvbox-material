@@ -24,8 +24,8 @@ keys = [
     # Kitty
     Key([mod], "a", lazy.spawn("kitty"), desc="Launch terminal"),
     Key([mod], "e", lazy.spawn("kitty ranger"), desc="Launch file manager"),
+    Key([mod], "q", lazy.spawn("kitty nvim"), desc="Launch editor"),
     Key([mod, "shift"], "a", lazy.spawn("kitty paru"), desc="Perform system update"),
-    Key([mod, "shift"], "q", lazy.spawn("kitty nvim"), desc="Launch editor"),
 
     # Rofi
     Key([mod], "r", lazy.spawn("rofi -show drun"), desc="Run application launcher"),
