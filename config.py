@@ -14,7 +14,6 @@ mod = "mod4"
 keys = [
     # Launch applications
     Key([mod], "g", lazy.spawn("prismlauncher"), desc="Launch Minecraft"),
-    Key([mod], "q", lazy.spawn("neovide --multigrid"), desc="Launch editor"),
     Key([mod], "v", lazy.spawn("virt-manager"), desc="Launch virtual machines"),
 
     # Chromium
