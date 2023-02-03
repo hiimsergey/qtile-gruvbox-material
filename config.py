@@ -1,6 +1,6 @@
 # ~/.config/qtile/config.py
 # Qtile configuration
-# Gruvbox Material
+# Gruvbox Material Style
 # https://github.com/hiimsergey/qtile-gruvbox-material
 
 ## IMPORTS
@@ -18,14 +18,14 @@ keys = [
 
     # Chromium
     Key([mod], "c", lazy.spawn("chromium"), desc="Launch browser"),
-    Key([mod, "shift"], "c", lazy.spawn("chromium --incognito"), desc="Launch incognito browser window"),
+    Key([mod, "shift"], "c", lazy.spawn("chromium --incognito"), desc="Do forbidden stuff"),
     Key([mod, "control"], "c", lazy.spawn("chromium https://www.youtube.com/playlist?list=WL"), desc="Open YouTube Watchlist"),
 
     # Kitty
     Key([mod], "a", lazy.spawn("kitty"), desc="Launch terminal"),
     Key([mod], "e", lazy.spawn("kitty ranger"), desc="Launch file manager"),
     Key([mod, "shift"], "a", lazy.spawn("kitty paru"), desc="Perform system update"),
-    Key([mod, "shift"], "q", lazy.spawn("kitty nvim"), desc="Launch editor too"),
+    Key([mod, "shift"], "q", lazy.spawn("kitty nvim"), desc="Launch editor"),
 
     # Rofi
     Key([mod], "r", lazy.spawn("rofi -show drun"), desc="Run application launcher"),
@@ -65,15 +65,11 @@ keys = [
     Key([mod], "n", lazy.layout.normalize(), desc="Reset all window sizes"),
 
     # Switch columns
-    Key([mod, "mod1"], "h", lazy.layout.swap_column_left()),
-    Key([mod, "mod1"], "l", lazy.layout.swap_column_right()),
+    Key([mod, "mod1"], "h", lazy.layout.swap_column_left(), desc="Swap with columns to left"),
+    Key([mod, "mod1"], "l", lazy.layout.swap_column_right(), desc="Swap with columns to right"),
 
     # Toggle between split and unsplit sides of stack.
     Key([mod], "return", lazy.layout.toggle_split(), desc="Toggle split window stack"),
-
-    # Toggle between different layouts
-    Key([mod], "tab", lazy.next_layout(), desc="Toggle next layout"),
-    Key([mod, "shift"], "tab", lazy.next_layout(), desc="Toggle previous layout"),
 
     # Toggle floating or fullscreen windows
     Key([mod], "t", lazy.window.toggle_floating(), desc="Toggle floating window"),
@@ -81,6 +77,7 @@ keys = [
 
     # Other basic actions
     Key([mod], "w", lazy.window.kill(), desc="Kill focused window"),
+    Key([mod], "tab", lazy.next_layout(), desc="Toggle next layout"),
     Key([mod, "control"], "r", lazy.reload_config(), desc="Reload the config"),
     Key([mod, "control"], "q", lazy.shutdown(), desc="Shutdown Qtile"),
 ]
@@ -121,7 +118,7 @@ layouts = [
 ]
 
 ## COLORS
-colo = ["#282828", # bg
+colo = ["#282828", # background
         "#b85651", # red
         "#bd6f3e", # orange
         "#c18f41", # yellow
@@ -180,7 +177,7 @@ screens = [
                 widget.Spacer(),
 
                 pline(1, colo[2], colo[0]),
-                widget.Net(
+                widget.Net( # requires python-psutil
                     interface="wlo1",
                     format="📡 {total}",
                     update_interval=30,
@@ -225,9 +222,11 @@ screens = [
 @hook.subscribe.startup
 def autostart():
     home = os.path.expanduser("~")
+    # Don't forget to 'chmod +x' this file
     subprocess.call([home + "/.config/qtile/autostart.sh"])
 
 ## ETC
+# To be honest, I have no idea about what this does.
 dgroups_key_binder = None
 dgroups_app_rules = []  # type: list
 follow_mouse_focus = True
