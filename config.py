@@ -13,15 +13,20 @@ import os, subprocess
 mod = "mod4"
 keys = [
     # Launch applications
-    Key([mod], "a", lazy.spawn("kitty"), desc="Launch terminal"),
-    Key([mod], "c", lazy.spawn("chromium"), desc="Launch browser"),
-    Key([mod], "e", lazy.spawn("thunar Downloads"), desc="Show Downloads folder"),
     Key([mod], "g", lazy.spawn("prismlauncher"), desc="Launch Minecraft"),
-    Key([mod], "q", lazy.spawn("obsidian"), desc="Launch notes"),
-    Key([mod, "shift"], "q", lazy.spawn("vscodium"), desc="Launch IDE"),
+    Key([mod], "q", lazy.spawn("neovide --multigrid"), desc="Launch editor"),
     Key([mod], "v", lazy.spawn("virt-manager"), desc="Launch virtual machines"),
-    Key([mod, "shift"], "e", lazy.spawn("thunar"), desc="Launch file manager"),
+
+    # Chromium
+    Key([mod], "c", lazy.spawn("chromium"), desc="Launch browser"),
     Key([mod, "shift"], "c", lazy.spawn("chromium --incognito"), desc="Launch incognito browser window"),
+    Key([mod, "control"], "c", lazy.spawn("chromium https://www.youtube.com/playlist?list=WL"), desc="Open YouTube Watchlist"),
+
+    # Kitty
+    Key([mod], "a", lazy.spawn("kitty"), desc="Launch terminal"),
+    Key([mod], "e", lazy.spawn("kitty ranger"), desc="Launch file manager"),
+    Key([mod, "shift"], "a", lazy.spawn("kitty paru"), desc="Perform system update"),
+    Key([mod, "shift"], "q", lazy.spawn("kitty nvim"), desc="Launch editor too"),
 
     # Rofi
     Key([mod], "r", lazy.spawn("rofi -show drun"), desc="Run application launcher"),
@@ -117,14 +122,14 @@ layouts = [
 ]
 
 ## COLORS
-colo = [["#282828"], # bg
-        ["#b85651"], # red
-        ["#bd6f3e"], # orange
-        ["#c18f41"], # yellow
-        ["#8f9a52"], # green
-        ["#72966c"], # aqua
-        ["#68948a"], # blue
-        ["#ab6c7d"]] # purple
+colo = ["#282828", # bg
+        "#b85651", # red
+        "#bd6f3e", # orange
+        "#c18f41", # yellow
+        "#8f9a52", # green
+        "#72966c", # aqua
+        "#68948a", # blue
+        "#ab6c7d"] # purple
 
 ## SCREENS
 # To achieve a Powerline effect without installing anything additionally, you insert Unicode characters ("" and "") between the widgets.
@@ -134,7 +139,11 @@ def pline(rl, fg, bg):
         uc = ""
     else:
         uc = ""
-    return widget.TextBox(text = uc, padding = 0, fontsize = 22, foreground=fg, background=bg)
+    return widget.TextBox(text = uc,
+                          padding = 0,
+                          fontsize = 22,
+                          foreground=fg,
+                          background=bg)
 
 widget_defaults = dict(
     font="JetBrains Mono",
