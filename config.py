@@ -26,6 +26,7 @@ keys = [
     Key([mod], "e", lazy.spawn("kitty ranger"), desc="Launch file manager"),
     Key([mod], "q", lazy.spawn("kitty nvim"), desc="Launch editor"),
     Key([mod, "shift"], "a", lazy.spawn("kitty paru"), desc="Perform system update"),
+    Key([mod, "shift"], "q", lazy.spawn("kitty nvim basic/index.wiki"), desc="Open Vimwiki"),
 
     # Rofi
     Key([mod], "r", lazy.spawn("rofi -show drun"), desc="Run application launcher"),
@@ -94,16 +95,20 @@ groups = [Group(i) for i in "12345"]
 for i in groups:
     keys.extend(
         [
-            # mod1 + letter of group = switch to group
-            Key([mod], i.name, lazy.group[i.name].toscreen(), desc="Switch to group {}".format(i.name)),
-            # mod1 + shift + letter of group = switch to & move focused window to group
-            Key( [mod, "shift"], i.name, lazy.window.togroup(i.name, switch_group=True), desc="Switch to & move focused window to group {}".format(i.name)),
+            Key([mod], i.name, lazy.group[i.name].toscreen(),
+                desc="Switch to group {}".format(i.name)),
+            Key([mod, "shift"], i.name,
+                lazy.window.togroup(i.name, switch_group=True),
+                desc="Switch to & move focused window to group {}".format(i.name)),
         ]
     )
 
 ## LAYOUTS
 layouts = [
-    layout.Columns(border_focus_stack=["#ea6962", "#b85651"], border_width=4, margin=6, margin_on_single=0),
+    layout.Columns(border_focus_stack=["#ea6962", "#b85651"],
+                   border_width=4,
+                   margin=6,
+                   margin_on_single=0),
     layout.Max(),
     # layout.Stack(num_stacks=2),
     # layout.Bsp(),
@@ -226,7 +231,7 @@ def autostart():
     subprocess.call([home + "/.config/qtile/autostart.sh"])
 
 ## ETC
-# To be honest, I have no idea about what this does.
+# To be honest, I have no idea what this does.
 dgroups_key_binder = None
 dgroups_app_rules = []  # type: list
 follow_mouse_focus = True
